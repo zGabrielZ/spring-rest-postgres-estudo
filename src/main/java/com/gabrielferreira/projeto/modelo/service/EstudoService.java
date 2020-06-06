@@ -2,8 +2,6 @@ package com.gabrielferreira.projeto.modelo.service;
 
 import java.util.Date;
 import java.util.List;
-
-import org.springframework.data.domain.Page;
 import com.gabrielferreira.projeto.modelo.entidade.Estudo;
 
 public interface EstudoService {
@@ -20,10 +18,7 @@ public interface EstudoService {
 	
 	List<Estudo> listagem(Long id);
 	
-	Estudo consultarPorId(Long id);
-	
-	Page<Estudo> consultarEstudo(Date inicio,Date fim,Integer pagina,Integer linhasPorPagina,
-			String ordernarPor,String direcao);
+	Estudo consultarPorId(Long idEstudo,Long idAluno);
 	
 	void buscarDatas(Date inicio,Date fim);
 	

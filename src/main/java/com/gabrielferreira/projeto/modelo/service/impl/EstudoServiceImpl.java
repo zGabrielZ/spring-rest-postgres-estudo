@@ -1,5 +1,4 @@
 package com.gabrielferreira.projeto.modelo.service.impl;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -7,9 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,22 +104,15 @@ public class EstudoServiceImpl implements EstudoService{
 	}
 
 	@Override
-	public Estudo consultarPorId(Long id) {
-		Optional<Estudo> estudo = estudoRepositorio.findById(id);
+	public Estudo consultarPorId(Long idEstudo,Long idAluno) {
+		Aluno aluno = alunoRepositorio.findById(idAluno)
+				.orElseThrow(()-> new EntidadeNotFoundException("Aluno não encontrado"));
+		Optional<Estudo> estudo = estudoRepositorio.verificarEstudoAluno(aluno.getId(), idEstudo);
 		if(!estudo.isPresent()) {
 			throw new EntidadeNotFoundException("Estudo não encontrado");
 		}
 		
 		return estudo.get();
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public Page<Estudo> consultarEstudo(Date inicio, Date fim, Integer pagina, Integer linhasPorPagina,
-			String ordernarPor, String direcao) {
-		PageRequest pageRequest = PageRequest.of(pagina,linhasPorPagina,
-				Direction.valueOf(direcao), ordernarPor);
-		return estudoRepositorio.pesquisarEstudo(inicio, fim, pageRequest);
 	}
 
 	@Override

@@ -46,19 +46,19 @@ public class EstudoController {
 		return toModel(estudoServiceImpl.inserir(estudo));
 	}
 	
-	@PutMapping("{estudoId}/paralisada")
+	@PutMapping("/{estudoId}/paralisada")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void paralisar(@PathVariable Long estudoId) {
 		estudoServiceImpl.paralisar(estudoId);
 	}
 	
-	@PutMapping("{estudoId}/finalizar")
+	@PutMapping("/{estudoId}/finalizar")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void finalizar(@PathVariable Long estudoId) {
 		estudoServiceImpl.terminado(estudoId);
 	}
 	
-	@PutMapping("{estudoId}/reiniciar")
+	@PutMapping("/{estudoId}/reiniciar")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void reiniciar(@PathVariable Long estudoId) {
 		estudoServiceImpl.reinicar(estudoId);
@@ -74,6 +74,15 @@ public class EstudoController {
 	public List<EstudoConsultaDTO> listar(@PathVariable Long idAluno) {
 		Aluno aluno = alunoServiceImpl.consultarPorId(idAluno);
 		return toCollectionModel(estudoServiceImpl.listagem(aluno.getId()));
+	}
+	
+	@GetMapping("/{idAluno}/estudar/{idEstudo}")
+	public ResponseEntity<EstudoConsultaDTO> consultarPorId(@PathVariable Long idAluno,
+			@PathVariable Long idEstudo) {
+		Estudo estudo = estudoServiceImpl.consultarPorId(idEstudo, idAluno);
+		estudo.setAluno(alunoServiceImpl.consultarPorId(idAluno));
+		EstudoConsultaDTO dto = toModelConsultaDTO(estudo);
+		return ResponseEntity.ok().body(dto);
 	}
 	
 	private EstudoDTO toModel(Estudo estudo) {
@@ -93,8 +102,6 @@ public class EstudoController {
 				.map(estudo -> toModelConsultaDTO(estudo))
 				.collect(Collectors.toList());
 	}
-	
-	
 	
 	
 }
