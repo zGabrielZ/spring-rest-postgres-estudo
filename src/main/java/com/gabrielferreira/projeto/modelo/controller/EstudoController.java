@@ -64,8 +64,11 @@ public class EstudoController {
 		estudoServiceImpl.reinicar(estudoId);
 	}
 	
-	@DeleteMapping("/{idEstudo}")
-	public ResponseEntity<Void> deletar(@PathVariable Long idEstudo){
+	@DeleteMapping("/{idAluno}/estudar/{idEstudo}")
+	public ResponseEntity<Void> deletar(@PathVariable Long idAluno,
+			@PathVariable Long idEstudo){
+		Estudo estudo = estudoServiceImpl.consultarPorId(idEstudo, idAluno);
+		estudo.setAluno(alunoServiceImpl.consultarPorId(idAluno));
 		estudoServiceImpl.deletarEstudo(idEstudo);
 		return ResponseEntity.noContent().build();
 	}
