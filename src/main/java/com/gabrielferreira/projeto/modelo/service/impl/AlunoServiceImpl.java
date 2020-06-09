@@ -1,5 +1,6 @@
 package com.gabrielferreira.projeto.modelo.service.impl;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,11 @@ public class AlunoServiceImpl implements AlunoService{
 		}
 		
 		return aluno.get();
+	}
+
+	@Override
+	public List<Aluno> listar() {
+		return alunoRepositorio.findAll();
 	}
 	
 }

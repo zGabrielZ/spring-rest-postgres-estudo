@@ -25,5 +25,6 @@ public interface EstudoService {
 	void validarDatas(Date inicio,Date fim);
 	
 	void buscarDisciplinaAluno(Long disciplinaId,Long  alunoId);
+
 	
 }

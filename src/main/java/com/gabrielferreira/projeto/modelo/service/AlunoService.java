@@ -2,6 +2,8 @@ package com.gabrielferreira.projeto.modelo.service;
 
 
 
+import java.util.List;
+
 import com.gabrielferreira.projeto.modelo.entidade.Aluno;
 
 public interface AlunoService {
@@ -13,5 +15,7 @@ public interface AlunoService {
 	Aluno inserirAluno(Aluno aluno);
 	
 	Aluno consultarPorId(Long idAluno);
+	
+	List<Aluno> listar();
 	
 }

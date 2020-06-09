@@ -1,9 +1,13 @@
 package com.gabrielferreira.projeto.modelo.controller;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +44,11 @@ public class AlunoController {
 		return toModel(alunoServiceImpl.autenticarAluno(aluno.getEmail(),aluno.getSenha()));
 	}
 	
+	@GetMapping
+	public List<AlunoDTO> listar() {
+		return toCollectionModel(alunoServiceImpl.listar());
+	}
+	
 	private AlunoDTO toModel(Aluno aluno) {
 		return modelMapper.map(aluno,AlunoDTO.class);
 	}
@@ -50,6 +59,10 @@ public class AlunoController {
 	
 	private Aluno toEntityAutenticar(AlunoAutenticarDTO dto) {
 		return modelMapper.map(dto,Aluno.class);
+	}
+	
+	private List<AlunoDTO> toCollectionModel(List<Aluno> alunos) {
+		return alunos.stream().map(aluno -> toModel(aluno)).collect(Collectors.toList());
 	}
 	
 }

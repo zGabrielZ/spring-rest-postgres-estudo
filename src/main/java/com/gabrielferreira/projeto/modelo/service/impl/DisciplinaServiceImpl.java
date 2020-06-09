@@ -8,9 +8,9 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.gabrielferreira.projeto.modelo.entidade.Aluno;
@@ -89,13 +89,15 @@ public class DisciplinaServiceImpl implements DisciplinaService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<Disciplina> consultarNome(String nome, Integer pagina, Integer linhasPorPagina, String ordernarPor,
-			String direcao,Long idAluno) {
+	public List<Disciplina> consultarNome(Disciplina disciplina,Long idAluno) {
 		Aluno aluno = alunoRepositorio.findById(idAluno)
 				.orElseThrow(()-> new EntidadeNotFoundException("Aluno não encontrado"));
-		PageRequest pageRequest = PageRequest.of(pagina,linhasPorPagina,
-				Direction.valueOf(direcao), ordernarPor);
-		return disciplinaRepositorio.pesquisarDisciplina(nome, pageRequest,aluno.getId());
+		Example<Disciplina> example = Example.of(disciplina,ExampleMatcher
+				.matching()
+				.withIgnoreCase()
+				.withStringMatcher(StringMatcher.CONTAINING));
+		aluno.getDisciplinas().add(disciplina);
+		return disciplinaRepositorio.findAll(example);
 	}
 
 	@Override

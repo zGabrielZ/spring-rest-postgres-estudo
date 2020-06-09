@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,7 +27,6 @@ import com.gabrielferreira.projeto.modelo.entidade.dto.DisciplinaDTO;
 import com.gabrielferreira.projeto.modelo.entidade.dto.DisciplinaInserirDTO;
 import com.gabrielferreira.projeto.modelo.service.impl.AlunoServiceImpl;
 import com.gabrielferreira.projeto.modelo.service.impl.DisciplinaServiceImpl;
-import com.gabrielferreira.projeto.utils.URL;
 
 @RestController
 @RequestMapping("/alunos")
@@ -78,17 +76,14 @@ public class DisciplinaController {
 	}
 	
 	@GetMapping("{idAluno}/disciplinas/buscar-nome-disciplina")
-	public ResponseEntity<Page<DisciplinaDTO>> consultarTudoPage(
-			@RequestParam(value = "nome",defaultValue = "")String nome,
-			@RequestParam(value = "pagina",defaultValue = "0")Integer pagina,
-			@RequestParam(value = "linhasPorPagina",defaultValue = "24")Integer linhasPorPagina,
-			@RequestParam(value = "ordernarPor",defaultValue = "nome")String ordernarPor,
-			@RequestParam(value = "direcao",defaultValue = "ASC")String direcao,
-			@PathVariable Long idAluno) {
-		String nomeDecode = URL.decodeParam(nome);
-		Page<Disciplina> disciplinas = disciplinaServiceImpl.consultarNome
-				(nomeDecode, pagina, linhasPorPagina, ordernarPor, direcao,idAluno);
-		return ResponseEntity.ok().body(toCollectionModelPage(disciplinas));
+	public ResponseEntity<List<DisciplinaDTO>> consulta(@RequestParam(value = "nome",required = false) String nome,
+			@PathVariable Long idAluno){
+		Disciplina disciplina = new Disciplina();
+		disciplina.setNome(nome);
+		Aluno aluno = alunoServiceImpl.consultarPorId(idAluno);
+		disciplina.setAluno(aluno);
+		List<Disciplina> disciplinas = disciplinaServiceImpl.consultarNome(disciplina, aluno.getId());
+		return ResponseEntity.ok().body(toCollectionModel(disciplinas));
 	}
 	
 	@DeleteMapping("/{idAluno}/disciplinas/{idDisciplina}")
@@ -118,9 +113,5 @@ public class DisciplinaController {
 				.collect(Collectors.toList());
 	}
 	
-	private Page<DisciplinaDTO> toCollectionModelPage(Page<Disciplina> disciplinas) {
-		return disciplinas
-				.map(disciplina -> toModel(disciplina));
-	}
 	
 }
