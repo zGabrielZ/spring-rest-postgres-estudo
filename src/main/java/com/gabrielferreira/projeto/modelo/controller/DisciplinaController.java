@@ -75,7 +75,7 @@ public class DisciplinaController {
 		return ResponseEntity.ok().body(disciplinaDTO);
 	}
 	
-	@GetMapping("{idAluno}/disciplinas/buscar-nome-disciplina")
+	@PostMapping("{idAluno}/disciplinas/buscar-nome-disciplina")
 	public ResponseEntity<List<DisciplinaDTO>> consulta(@RequestParam(value = "nome",required = false) String nome,
 			@PathVariable Long idAluno){
 		Disciplina disciplina = new Disciplina();

@@ -8,9 +8,6 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.gabrielferreira.projeto.modelo.entidade.Aluno;
@@ -92,12 +89,8 @@ public class DisciplinaServiceImpl implements DisciplinaService{
 	public List<Disciplina> consultarNome(Disciplina disciplina,Long idAluno) {
 		Aluno aluno = alunoRepositorio.findById(idAluno)
 				.orElseThrow(()-> new EntidadeNotFoundException("Aluno não encontrado"));
-		Example<Disciplina> example = Example.of(disciplina,ExampleMatcher
-				.matching()
-				.withIgnoreCase()
-				.withStringMatcher(StringMatcher.CONTAINING));
 		aluno.getDisciplinas().add(disciplina);
-		return disciplinaRepositorio.findAll(example);
+		return disciplinaRepositorio.pesquisarDisciplina(disciplina.getNome(),aluno.getId());
 	}
 
 	@Override

@@ -2,9 +2,6 @@ package com.gabrielferreira.projeto.modelo.repositorio;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,7 +16,7 @@ public interface DisciplinaRepositorio extends JpaRepository<Disciplina,Long>{
 	Optional<Disciplina> existeNome(@Param("nome")String nome,@Param("id")Long id);
 	
 	@Query("select d FROM Disciplina d where d.nome like %:nome% and d.aluno.id =:idAluno")
-	public Page<Disciplina> pesquisarDisciplina(@Param("nome")String nome,Pageable pageable,Long idAluno);
+	public List<Disciplina> pesquisarDisciplina(@Param("nome")String nome,Long idAluno);
 	
 	@Query("select d from Disciplina d where d.aluno.id = ?1")
 	public List<Disciplina> getDisciplinas(Long idAluno);
