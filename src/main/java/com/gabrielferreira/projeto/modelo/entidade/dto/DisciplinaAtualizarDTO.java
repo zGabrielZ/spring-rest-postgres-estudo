@@ -1,4 +1,6 @@
 package com.gabrielferreira.projeto.modelo.entidade.dto;
+import java.io.Serializable;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -11,8 +13,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DisciplinaAtualizarDTO {
+public class DisciplinaAtualizarDTO implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	@NotBlank(message = "Nome não pode ser vazio")
 	@Size(max = 120,message = "Não pode passa de 120 caracteres")
 	private String nome;

@@ -12,8 +12,12 @@ import com.gabrielferreira.projeto.modelo.entidade.Disciplina;
 @Repository
 public interface DisciplinaRepositorio extends JpaRepository<Disciplina,Long>{
 
-	@Query("select d from Disciplina d where d.nome like %:nome% and d.aluno.id =:id")
+	@Query("select d from Disciplina d where d.nome =:nome and d.aluno.id =:id")
 	Optional<Disciplina> existeNome(@Param("nome")String nome,@Param("id")Long id);
+	
+	@Query("select d from Disciplina d where d.nome =:nome and d.aluno.id =:idAluno and d.id <> :idDisciplina")
+	Optional<Disciplina> existeNomeAtualizado(@Param("nome")String nome,@Param("idAluno")Long id,
+			@Param("idDisciplina")Long idDisciplina);
 	
 	@Query("select d FROM Disciplina d where d.nome like %:nome% and d.aluno.id =:idAluno")
 	public List<Disciplina> pesquisarDisciplina(@Param("nome")String nome,Long idAluno);

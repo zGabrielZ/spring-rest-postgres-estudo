@@ -41,7 +41,7 @@ public class DisciplinaServiceImpl implements DisciplinaService{
 	@Override
 	public Disciplina atualizar(Long idDisciplina, Disciplina disciplina,Long idAluno) {
 		try {
-			validarNome(disciplina.getNome(),idAluno);
+			validarNomeAtualizado(disciplina.getNome(), idAluno, idDisciplina);
 			Disciplina entidade = disciplinaRepositorio.getOne(idDisciplina);
 			updateData(entidade,disciplina);
 			return disciplinaRepositorio.save(entidade);
@@ -96,6 +96,14 @@ public class DisciplinaServiceImpl implements DisciplinaService{
 	@Override
 	public void validarNome(String nome,Long idAluno) {
 		Optional<Disciplina> disciplinaNome = disciplinaRepositorio.existeNome(nome, idAluno);
+		if(disciplinaNome.isPresent()) {
+			throw new RegraDeNegocioException("Já existe esta disciplina cadastrada, por favor tente novamente");
+		}
+	}
+	
+	@Override
+	public void validarNomeAtualizado(String nome,Long idAluno,Long idDisciplina) {
+		Optional<Disciplina> disciplinaNome = disciplinaRepositorio.existeNomeAtualizado(nome, idAluno, idDisciplina);
 		if(disciplinaNome.isPresent()) {
 			throw new RegraDeNegocioException("Já existe esta disciplina cadastrada, por favor tente novamente");
 		}

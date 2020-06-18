@@ -1,5 +1,5 @@
 package com.gabrielferreira.projeto.modelo.service.impl;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +36,8 @@ public class EstudoServiceImpl implements EstudoService{
 	@Override
 	@Transactional
 	public Estudo inserir(Estudo estudo) {
-		buscarDatas(estudo.getDataInicio(), estudo.getDataFim());
-		validarDatas(estudo.getDataInicio(), estudo.getDataFim());
+		buscarDatas(estudo.getDataInicio());
+		validarDatas(estudo.getDataInicio());
 		Optional<Aluno> aluno = alunoRepositorio.findById(estudo.getAluno().getId());
 		if(!aluno.isPresent()){
 			throw new EntidadeNotFoundException("Aluno não encontrado");
@@ -116,10 +116,10 @@ public class EstudoServiceImpl implements EstudoService{
 	}
 
 	@Override
-	public void buscarDatas(Date inicio, Date fim) {
-		boolean validar = estudoRepositorio.existsByDataInicioAndDataFim(inicio, fim);
+	public void buscarDatas(LocalDateTime inicio) {
+		boolean validar = estudoRepositorio.existsByDataInicio(inicio);
 		if(validar) {
-			throw new RegraDeNegocioException("Já existe essas datas cadastrada, por favor tente novamente");
+			throw new RegraDeNegocioException("Já existe essa data cadastrada, por favor tente novamente");
 		}
 	}
 
@@ -136,16 +136,10 @@ public class EstudoServiceImpl implements EstudoService{
 	}
 
 	@Override
-	public void validarDatas(Date inicio, Date fim) {
-		if(!fim.after(inicio)) {
-			throw new RegraDeNegocioException("A data final deve ser posterior à data inicial");
-		}	
-		
-		Date agora = new Date();
+	public void validarDatas(LocalDateTime inicio) {
+		if (inicio.isBefore(LocalDateTime.now())) {
 
-		if (inicio.before(agora) || fim.before(agora)) {
-
-			throw new RegraDeNegocioException("As datas devem ser futuras");
+			throw new RegraDeNegocioException("A data inicial deve ser futura");
 
 		}
 	}
@@ -157,5 +151,5 @@ public class EstudoServiceImpl implements EstudoService{
 			throw new RegraDeNegocioException("Não podemos inserir, pois esta disciplina não esta cadastrada no aluno");
 		}
 	}
-
+	
 }

@@ -24,7 +24,7 @@ public class AlunoServiceImpl implements AlunoService{
 	public void validarEmail(String email) {
 		boolean validar = alunoRepositorio.existsByEmail(email);
 		if(validar) {
-			throw new RegraDeNegocioException("Já existe este aluno cadastrado, por favor tente novamente");
+			throw new RegraDeNegocioException("Já existe este aluno cadastrado com este email, por favor tente novamente");
 		}
 	}
 
@@ -46,6 +46,7 @@ public class AlunoServiceImpl implements AlunoService{
 	@Transactional
 	public Aluno inserirAluno(Aluno aluno) {
 		validarEmail(aluno.getEmail());
+		validarDataNascimento(aluno.getDataNascimento());
 		aluno.setDataCadastro(new Date());
 		return alunoRepositorio.save(aluno);
 	}
@@ -63,6 +64,14 @@ public class AlunoServiceImpl implements AlunoService{
 	@Override
 	public List<Aluno> listar() {
 		return alunoRepositorio.findAll();
+	}
+
+	@Override
+	public void validarDataNascimento(Date nascimento) {
+		Date hoje = new Date();
+		if(!nascimento.before(hoje)) {
+			throw new RegraDeNegocioException("Data nascimento deve ser antes ou do dia de hoje");
+		}
 	}
 	
 }

@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.gabrielferreira.projeto.modelo.entidade.enums.Ensino;
+import com.gabrielferreira.projeto.modelo.entidade.enums.Sexo;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +35,9 @@ public class Aluno implements Serializable{
 	private String email;
 	private String senha;
 	private Date dataCadastro;
+	private Date dataNascimento;
+	private Ensino ensino;
+	private Sexo sexo;
 	
 	@OneToMany(mappedBy = "aluno")
 	private List<Estudo> estudos = new ArrayList<>();
@@ -39,12 +45,17 @@ public class Aluno implements Serializable{
 	@OneToMany(mappedBy = "aluno")
 	private List<Disciplina> disciplinas = new ArrayList<Disciplina>();
 	
-	public Aluno(Long id, String nomeCompleto, String email, String senha, Date dataCadastro) {
+	public Aluno(Long id, String nomeCompleto, String email, String senha, Date dataCadastro, Date dataNascimento,
+			Ensino ensino, Sexo sexo) {
+		super();
 		this.id = id;
 		this.nomeCompleto = nomeCompleto;
 		this.email = email;
 		this.senha = senha;
 		this.dataCadastro = dataCadastro;
+		this.dataNascimento = dataNascimento;
+		this.ensino = ensino;
+		this.sexo = sexo;
 	}
 	
 	

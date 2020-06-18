@@ -22,11 +22,11 @@ public class AlunoAutenticarDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Email(message = "Email inválido")
-	@NotBlank(message = "Email não pode ser vazio")
+	@NotBlank(message = "Campo do email não pode ser vazio")
 	@Size(max = 120,message = "Não pode passa de 120 caracteres")
 	private String email;
 	
-	@NotBlank(message = "Senha não pode ser vazio")
+	@NotBlank(message = "Campo da senha não pode ser vazio")
 	@Size(max = 100,message = "Não pode passa de 100 caracteres")
 	private String senha;
 	

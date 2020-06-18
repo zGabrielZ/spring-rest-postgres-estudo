@@ -1,6 +1,6 @@
 package com.gabrielferreira.projeto.modelo.service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import com.gabrielferreira.projeto.modelo.entidade.Estudo;
 
@@ -20,9 +20,9 @@ public interface EstudoService {
 	
 	Estudo consultarPorId(Long idEstudo,Long idAluno);
 	
-	void buscarDatas(Date inicio,Date fim);
+	void buscarDatas(LocalDateTime inicio);
 	
-	void validarDatas(Date inicio,Date fim);
+	void validarDatas(LocalDateTime inicio);
 	
 	void buscarDisciplinaAluno(Long disciplinaId,Long  alunoId);
 

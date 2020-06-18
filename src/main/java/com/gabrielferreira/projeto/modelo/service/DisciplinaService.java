@@ -19,4 +19,6 @@ public interface DisciplinaService {
 	List<Disciplina> consultarNome(Disciplina disciplina,Long idAluno);
 	
 	void validarNome(String nome,Long idAluno);
+	
+	void validarNomeAtualizado(String nome,Long idAluno,Long idDisciplina);
 }

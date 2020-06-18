@@ -1,7 +1,7 @@
 package com.gabrielferreira.projeto.modelo.entidade;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -33,15 +33,17 @@ public class Estudo implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
+	private static final String MY_TIME_ZONE="GMT-3";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-	private Date dataInicio;
-	
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-	private Date dataFim;
+	@JsonFormat(timezone = MY_TIME_ZONE)
+	private LocalDateTime dataInicio;
+		
+	@JsonFormat(timezone = MY_TIME_ZONE)
+	private LocalDateTime dataFim;
 	
 	@ManyToOne
 	@JoinColumn(name = "aluno_id")
@@ -53,6 +55,8 @@ public class Estudo implements Serializable{
 	
 	@Enumerated(EnumType.STRING)
 	private StatusEstudo statusEstudo;
+	
+	private Integer horasPrevista;
 	
 	public boolean naoPodeSerFinalizada() {
 		return StatusEstudo.PARALISADO.equals(getStatusEstudo()) || StatusEstudo.TERMINADO.equals(getStatusEstudo());
@@ -78,6 +82,7 @@ public class Estudo implements Serializable{
 		}
 		
 		setStatusEstudo(StatusEstudo.TERMINADO);
+		setDataFim(LocalDateTime.now());
 	}
 	
 	public void paralisada() {
