@@ -1,5 +1,4 @@
 package com.gabrielferreira.projeto.modelo.repositorio;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +10,9 @@ import com.gabrielferreira.projeto.modelo.entidade.Estudo;
 @Repository
 public interface EstudoRepositorio extends JpaRepository<Estudo,Long>{
 
-	boolean existsByDataInicio(LocalDateTime inicio);
+	
+	@Query("select e from Estudo e where e.aluno.id =:idAluno and e.dataInicio =:data")
+	public Optional<Estudo> verificarHoraEstudoAluno(Long idAluno,LocalDateTime data);
 	
 	@Query("select e from Estudo e where e.aluno.id = ?1")
 	List<Estudo> listagemDeEstudo(Long id);

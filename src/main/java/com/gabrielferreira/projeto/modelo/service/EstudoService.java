@@ -20,7 +20,7 @@ public interface EstudoService {
 	
 	Estudo consultarPorId(Long idEstudo,Long idAluno);
 	
-	void buscarDatas(LocalDateTime inicio);
+	void buscarDatas(LocalDateTime inicio,Long idAluno);
 	
 	void validarDatas(LocalDateTime inicio);
 	

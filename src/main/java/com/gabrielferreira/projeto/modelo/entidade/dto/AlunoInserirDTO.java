@@ -7,6 +7,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +22,8 @@ import lombok.Setter;
 public class AlunoInserirDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final String MY_TIME_ZONE="GMT-3";
 	
 	@NotBlank(message = "Campo do nome não pode ser vazio")
 	@Size(max = 120,message = "Não pode passa de 120 caracteres")
@@ -33,6 +38,7 @@ public class AlunoInserirDTO implements Serializable{
 	@Size(max = 100,message = "Não pode passa de 100 caracteres")
 	private String senha;
 	
+	@JsonFormat(timezone = MY_TIME_ZONE)
 	@NotNull(message = "Campo do nascimento não pode ser vazio ou digitado incorretamente")
 	private Date dataNascimento;
 	

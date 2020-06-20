@@ -36,7 +36,7 @@ public class EstudoServiceImpl implements EstudoService{
 	@Override
 	@Transactional
 	public Estudo inserir(Estudo estudo) {
-		buscarDatas(estudo.getDataInicio());
+		buscarDatas(estudo.getDataInicio(),estudo.getAluno().getId());
 		validarDatas(estudo.getDataInicio());
 		Optional<Aluno> aluno = alunoRepositorio.findById(estudo.getAluno().getId());
 		if(!aluno.isPresent()){
@@ -116,9 +116,9 @@ public class EstudoServiceImpl implements EstudoService{
 	}
 
 	@Override
-	public void buscarDatas(LocalDateTime inicio) {
-		boolean validar = estudoRepositorio.existsByDataInicio(inicio);
-		if(validar) {
+	public void buscarDatas(LocalDateTime inicio,Long idAluno) {
+		Optional<Estudo> estudo = estudoRepositorio.verificarHoraEstudoAluno(idAluno,inicio);
+		if(estudo.isPresent()) {
 			throw new RegraDeNegocioException("Já existe essa data cadastrada, por favor tente novamente");
 		}
 	}
